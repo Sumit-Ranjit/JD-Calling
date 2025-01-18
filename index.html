@@ -3,17 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Display</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Login Page</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    form { max-width: 300px; margin: auto; }
+    input { display: block; margin: 10px auto; padding: 10px; width: 100%; }
+    button { padding: 10px 20px; }
+    #content { display: none; }
+  </style>
 </head>
 <body>
-  <h1>Welcome to My GitHub Page</h1>
-  <p>This is a simple example of a webpage hosted on GitHub Pages.</p>
-  <form>
-    <label for="input">Your Input:</label>
-    <input type="text" id="input" name="input">
-    <button type="submit">Submit</button>
+  <h1>Login to Access the Page</h1>
+  <form id="login-form">
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Login</button>
   </form>
-  <script src="script.js"></script>
+
+  <div id="content">
+    <h2>Welcome to the Protected Content!</h2>
+    <p>You have successfully logged in.</p>
+  </div>
+
+  <script>
+    let credentials;
+
+    // Load the credentials JSON
+    fetch('credentials.json')
+      .then(response => response.json())
+      .then(data => credentials = data);
+
+    // Handle form submission
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Validate credentials
+      const user = credentials.find(user => user.Username === username && user.Password === password);
+
+      if (user) {
+        alert('Login successful!');
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+      } else {
+        alert('Invalid username or password. Please try again.');
+      }
+    });
+  </script>
 </body>
 </html>
